@@ -54,7 +54,7 @@ class PreactComponent < ApplicationComponent
 
   def ssr_url
     host = ENV.fetch('SSR_HOST', 'localhost')
-    port = ENV.fetch('SSR_PORT', '5400')
+    port = ENV.fetch('SSR_PORT', '3400')
 
     "http://#{host}:#{port}"
   end

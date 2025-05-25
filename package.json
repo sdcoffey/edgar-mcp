@@ -13,13 +13,11 @@
     "prepare": "husky",
     "lint": "biome lint",
     "build": "bun esbuild.mjs",
-    "build:css": "postcss \"./app/+(components|assets)/**/*.css\" --dir ./app/assets/builds",
-    "watch:css": "postcss -w \"./app/+(components|assets)/**/*.css\" --dir ./app/assets/builds",
-    "ssr:dev": "bun run --watch ssr/main.js",
-    "ssr:serve": "bun run ssr/main.js"
+    "build:css": "postcss ./app/assets/tailwind/application.css --dir ./app/assets/builds"
   },
   "devDependencies": {
     "@happy-dom/global-registrator": "^17.4.7",
+    "@tailwindcss/cli": "^4.1.7",
     "@tailwindcss/postcss": "^4.1.7",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/preact": "^3.2.4",
@@ -39,6 +37,7 @@
     "postcss": "^8.5.3",
     "postcss-cli": "^11.0.1",
     "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-import-ext-glob": "^2.1.1",
     "postcss-preset-env": "^10.1.6",
     "tailwindcss": "^4.1.7",
     "typescript": "^5.8.3"

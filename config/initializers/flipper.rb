@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'flipper/adapters/active_record'
-
 Rails.application.configure do
   ## Memoization ensures that only one adapter call is made per feature per request.
   ## For more info, see https://www.flippercloud.io/docs/optimization#memoization
@@ -10,8 +8,8 @@ Rails.application.configure do
   ## Flipper preloads all features before each request, which is recommended if:
   ##   * you have a limited number of features (< 100?)
   ##   * most of your requests depend on most of your features
-  ##   * you have limited gate data combined across all features (< 1k enabled gates,
-  #      like individual actors, across all features)
+  ##   * you have limited gate data combined across all features
+  #      (< 1k enabled gates, like individual actors, across all features)
   ##
   ## For more info, see https://www.flippercloud.io/docs/optimization#preloading
   # config.flipper.preload = true
@@ -37,8 +35,6 @@ Flipper.configure do |config|
   ## Configure other adapters that you want to use here:
   ## See http://flippercloud.io/docs/adapters
   # config.use Flipper::Adapters::ActiveSupportCacheStore, Rails.cache, expires_in: 5.minutes
-
-  config.adapter { Flipper::Adapters::ActiveRecord.new }
 end
 
 ## Register a group that can be used for enabling features.

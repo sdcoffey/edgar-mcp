@@ -24,14 +24,13 @@ default: &default
 
 development:
   <<:
-  # TODO: CHANGE ME
-  database: rails_template_development
+  database: edgar_mcp_development
   url: <%= ENV.fetch('DATABASE_URL', 'postgres://postgres@localhost:5100') %>
 
 test:
   <<: *default
   # TODO: CHANGE ME
-  database: rails_template_test
+  database: edgar_mcp_test
   url: <%= ENV.fetch('DATABASE_URL', 'postgres://postgres@localhost:5100') %>
 
 production:

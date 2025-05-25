@@ -81,8 +81,6 @@ class ImportMap
     end
 
     def module_specifier(name)
-      return "/assets/javascript/#{name}.js" unless Rails.env.production?
-
       ActionController::Base.helpers.javascript_path("javascript/#{name}")
     end
   end

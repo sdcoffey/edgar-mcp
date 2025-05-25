@@ -11,7 +11,7 @@
     <% if Rails.env.development? %>
       <%= javascript_include_tag 'javascript/livereload', type: 'module', 'data-turbo-track': 'reload', defer: true %>
     <% end %>
-    <%= stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
 
     <% RequestStore.store[:additional_stylesheets]&.each do |stylesheet| %>
       <%= stylesheet_link_tag stylesheet, 'data-turbo-track': 'reload' %>

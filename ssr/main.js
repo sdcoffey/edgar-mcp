@@ -51,6 +51,7 @@ const locationProxy = (url) =>
     },
   );
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3400;
 const host = process.env.HOST || "0.0.0.0";
+console.log(`listening at ${host}:${port}`);
 fastify.listen({ port, host });

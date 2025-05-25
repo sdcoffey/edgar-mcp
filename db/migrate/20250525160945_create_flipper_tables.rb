@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# rubocop:disable all
 
 class CreateFlipperTables < ActiveRecord::Migration[8.0]
   def up
@@ -14,7 +14,7 @@ class CreateFlipperTables < ActiveRecord::Migration[8.0]
       t.text :value
       t.timestamps null: false
     end
-    add_index :flipper_gates, %i[feature_key key value], unique: true, length: { value: 255 }
+    add_index :flipper_gates, [:feature_key, :key, :value], unique: true, length: { value: 255 }
   end
 
   def down

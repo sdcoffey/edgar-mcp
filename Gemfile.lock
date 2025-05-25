@@ -271,6 +271,11 @@ GEM
     prism (1.4.0)
     prop_initializer (0.2.0)
       zeitwerk (>= 2.6.18)
+    propshaft (1.1.0)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
+      railties (>= 7.0.0)
     psych (5.2.6)
       date
       stringio
@@ -400,14 +405,6 @@ GEM
     shoulda-matchers (6.5.0)
       activesupport (>= 5.2.0)
     smart_properties (1.17.0)
-    sprockets (4.2.2)
-      concurrent-ruby (~> 1.0)
-      logger
-      rack (>= 2.2.4, < 4)
-    sprockets-rails (3.5.2)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      sprockets (>= 3.0.0)
     stringio (3.1.7)
     tailwindcss-rails (4.2.3)
       railties (>= 7.0.0)
@@ -477,6 +474,7 @@ DEPENDENCIES
   http (~> 5.2)
   mini_racer (~> 0.18)
   pg (~> 1.5)
+  propshaft (~> 1.1)
   puma (~> 6.3)
   rails (~> 8.0.0)
   redis (~> 5.4)
@@ -488,7 +486,6 @@ DEPENDENCIES
   rubocop-rspec (~> 3)
   selenium-webdriver
   shoulda-matchers
-  sprockets-rails
   tailwindcss-rails (~> 4.2)
   tailwindcss-ruby (~> 4.1)
   turbo-rails (~> 2.0)
