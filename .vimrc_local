@@ -1,0 +1,14 @@
+let g:ale_fixers = {
+\  'ruby': ['rubocop'],
+\  'eruby': ['erblint'],
+\  'javascript': ['prettier'],
+\  'typescript': ['prettier'],
+\  'typescriptreact': ['prettier'],
+\  'css': ['prettier']
+\ }
+
+let g:ale_linters = {
+\  'ruby': ['rubocop'],
+\  'eruby': ['erblint']
+\ }
+

@@ -1,0 +1,71 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+plugins:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - "bin/**/*"
+    - "db/*schema.rb" # Auto generated
+    - "node_modules/**/*"
+    - "vendor/bundle/**/*"
+    - "config/locales/**/*"
+    - db/migrate/20250523161238_create_ahoy_visits_and_events.rb
+
+Layout/LineLength:
+  Exclude:
+    - "config/routes.rb"
+
+Lint/MissingSuper:
+  Exclude:
+    - "app/services/**/*"
+
+Metrics/AbcSize:
+  Max: 30
+  Exclude:
+    - "db/migrate/*"
+
+Metrics/BlockLength:
+  Exclude:
+    - "config/environments/*"
+    - "config/routes.rb"
+    - "lib/tasks/auto_annotate_models.rake"
+    - "spec/**/*"
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 25
+  Exclude:
+    - "db/migrate/*"
+
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 15
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FormatStringToken:
+  Exclude:
+    - "config/routes.rb"
+
+Style/NumericLiterals:
+  Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false

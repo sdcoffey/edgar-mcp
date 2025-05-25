@@ -1,0 +1,32 @@
+---
+exclude:
+  - "vendor/**/*"
+  - "app/components/preact_component.html.erb"
+  - "app/views/partials/_importmap.html.erb"
+EnableDefaultLinters: true
+linters:
+  ErbSafety:
+    enabled: true
+  Rubocop:
+    enabled: true
+    rubocop_config:
+      inherit_from:
+        - .rubocop.yml
+      Layout/InitialIndentation:
+        Enabled: false
+      Layout/LineLength:
+        Enabled: false
+      Layout/LeadingEmptyLines:
+        Enabled: false
+      Layout/TrailingEmptyLines:
+        Enabled: false
+      Layout/TrailingWhitespace:
+        Enabled: false
+      Naming/FileName:
+        Enabled: false
+      Style/FrozenStringLiteralComment:
+        Enabled: false
+      Lint/UselessAssignment:
+        Enabled: false
+      Rails/OutputSafety:
+        Enabled: false

@@ -1,0 +1,5 @@
+web: unset PORT && bin/rails server
+docker: docker compose up
+js: bun run build --watch
+ssr: bun ssr:dev
+css: bin/rails tailwindcss:watch

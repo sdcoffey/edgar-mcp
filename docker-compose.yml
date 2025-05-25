@@ -1,0 +1,11 @@
+version: "3"
+services:
+  db:
+    image: postgres:17-alpine
+    volumes:
+      - ./.data/db:/var/lib/postgresql/data
+    ports:
+      - "5100:5432"
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    shm_size: 256M

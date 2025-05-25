@@ -1,0 +1,5 @@
+<%= render(TestComponent.new(title: 'Example Title')) %>
+
+<div class="my-12" <%= stimulus_controllers('test-controller') %>>
+  <%= render(TestScopedStyleViewComponent.new) %>
+</div>

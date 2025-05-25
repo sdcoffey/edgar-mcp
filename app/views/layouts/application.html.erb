@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RailsTemplate</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= render('partials/importmap') %>
+
+    <% if Rails.env.development? %>
+      <%= javascript_include_tag 'javascript/livereload', type: 'module', 'data-turbo-track': 'reload', defer: true %>
+    <% end %>
+    <%= stylesheet_link_tag 'tailwind', 'data-turbo-track': 'reload' %>
+
+    <% RequestStore.store[:additional_stylesheets]&.each do |stylesheet| %>
+      <%= stylesheet_link_tag stylesheet, 'data-turbo-track': 'reload' %>
+    <% end %>
+
+    <%= javascript_include_tag 'javascript/application', type: 'module', 'data-turbo-track': 'reload', defer: true %>
+
+    <% RequestStore.store[:additional_scripts]&.each do |script| %>
+      <%= javascript_include_tag script, type: 'module', 'data-turbo-track': 'reload', defer: true %>
+    <% end %>
+  </head>
+  <body>
+    <main class="container mx-auto mt-28 px-5 flex">
+      <%= yield %>
+    </main>
+  </body>
+</html>

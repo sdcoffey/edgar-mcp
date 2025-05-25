@@ -1,0 +1,88 @@
+name: Acceptance
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
+      - run: bun install
+      - name: tsc
+        run: bun tsc
+      - name: biome
+        run: bun lint
+      - name: tests
+        run: bun test
+  ruby:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:14
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: rails_template_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432
+      RAILS_ENV: test
+      HEADLESS: true
+    steps:
+      - name: Install dependent libraries
+        run: sudo apt-get install libpq-dev libglib2.0-0 libglib2.0-dev libpoppler-glib8 libvips42
+
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup Database
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:migrate
+
+      - name: Lint Ruby
+        run: bundle exec rubocop
+
+      #      - name: Check Model Annotations
+      #        run: bundle exec annotate --frozen
+
+      - name: Precompile Assets
+        run: bundle exec rails assets:precompile
+
+      - name: Lint factories
+        run: bundle exec rails factory_bot:lint
+
+      - name: Run RSpec
+        run: bundle exec rspec
+#      - name: Archive production artifacts
+#        if: ${{ failure() }}
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: System failure screenshots
+#          path: |
+#            tmp/capybara/*.png

@@ -1,0 +1,27 @@
+<% props = requires_props? ? @props : {} %>
+
+<div class="preact-root-<%= @render_id %> contents">
+<% if ssr? %>
+<%= ssr&.html_safe %>
+<% end %>
+</div>
+
+<% if %w[client hydrate].include? render_mode %>
+<script type="module" defer>
+  import { h, hydrate, Component, render } from 'preact';
+
+  const elementRoot = document.querySelector('.preact-root-<%= @render_id %>');
+
+  const props = <%= props.to_json.html_safe %>;
+  const renderMode = <%= render_mode.to_json.html_safe %>;
+
+  const Mountable = (await import(<%= component_path.to_json.html_safe %>)).default;
+  const component = h(Mountable, props, null);
+
+  if (renderMode === 'hydrate') {
+    hydrate(component, elementRoot);
+  } else {
+    render(component, elementRoot);
+  }
+</script>
+<% end %>

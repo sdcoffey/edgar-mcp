@@ -1,0 +1,46 @@
+{
+  "name": "app",
+  "private": true,
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.13",
+    "dayjs": "^1.11.13",
+    "fastify": "^5.3.3",
+    "preact": "^10.26.6",
+    "preact-render-to-string": "^6.5.13"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "lint": "biome lint",
+    "build": "bun esbuild.mjs",
+    "build:css": "postcss \"./app/+(components|assets)/**/*.css\" --dir ./app/assets/builds",
+    "watch:css": "postcss -w \"./app/+(components|assets)/**/*.css\" --dir ./app/assets/builds",
+    "ssr:dev": "bun run --watch ssr/main.js",
+    "ssr:serve": "bun run ssr/main.js"
+  },
+  "devDependencies": {
+    "@happy-dom/global-registrator": "^17.4.7",
+    "@tailwindcss/postcss": "^4.1.7",
+    "@tailwindcss/typography": "^0.5.16",
+    "@testing-library/preact": "^3.2.4",
+    "@types/bun": "^1.2.14",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "chokidar": "^4.0.3",
+    "esbuild": "^0.25.4",
+    "eslint": "^9.27.0",
+    "eslint-config-preact": "^1.5.0",
+    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "glob": "^11.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
+    "lodash": "^4.17.21",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.1",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-preset-env": "^10.1.6",
+    "tailwindcss": "^4.1.7",
+    "typescript": "^5.8.3"
+  }
+}
