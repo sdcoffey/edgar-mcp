@@ -84,7 +84,7 @@ GEM
     amazing_print (1.8.1)
     annotaterb (4.14.0)
     ast (2.4.3)
-    avo (3.20.2)
+    avo (3.20.3)
       actionview (>= 6.1)
       active_link_to
       activerecord (>= 6.1)
