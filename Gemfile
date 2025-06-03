@@ -76,7 +76,7 @@ end
 
 gem 'ahoy_matey', '~> 5.0'
 gem 'amazing_print', require: 'ap'
-gem 'avo', '~> 3.20'
+gem 'avo', '~> 3.21'
 gem 'blazer', '~> 3.3'
 gem 'derived_images', '~> 0.4.1'
 gem 'execjs', '~> 2.10'
