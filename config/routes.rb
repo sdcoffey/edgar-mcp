@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'root#index'
 
+  post 'mcp', to: 'mcp#create'
+
   # TODO: authenticate admin routes
   scope :admin do
     get '', to: redirect('/admin/avo')
