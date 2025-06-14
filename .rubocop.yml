@@ -49,7 +49,7 @@ Rails/I18nLocaleTexts:
   Enabled: false
 
 RSpec/ExampleLength:
-  Max: 15
+  Max: 30
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

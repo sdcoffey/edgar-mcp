@@ -90,5 +90,23 @@ module JsonRpc
         data:
       )
     end
+
+    def self.method_not_found(id:, method: nil)
+      Error.new(
+        id:,
+        error_code: -32_601,
+        message: 'Method not found',
+        data: method ? "Method '#{method}' is not supported" : nil
+      )
+    end
+
+    def self.invalid_params(id:, data: nil)
+      Error.new(
+        id:,
+        error_code: -32_602,
+        message: 'Invalid params',
+        data:
+      )
+    end
   end
 end

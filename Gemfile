@@ -47,6 +47,10 @@ group :development, :test do
   gem 'dotenv-rails', '~> 3'
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 8'
+
+  gem 'ruby-lsp'
+  gem 'solargraph'
+  gem 'solargraph-rspec'
 end
 
 group :development do

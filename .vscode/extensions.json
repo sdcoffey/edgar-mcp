@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "Shopify.ruby-lsp",
+    "connorshea.vscode-ruby-test-adapter",
+    "castwide.solargraph"
+  ]
+}

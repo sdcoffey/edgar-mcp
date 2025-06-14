@@ -1,0 +1,45 @@
+---
+include:
+  - "**/*.rb"
+  - "**/*.rake"
+  - "**/*.gemspec"
+  - Gemfile
+  - Rakefile
+exclude:
+  - spec/examples.txt
+  - test/examples.txt
+  - ".git/**/*"
+  - vendor/**/*
+  - node_modules/**/*
+  - tmp/**/*
+  - log/**/*
+require:
+  - rspec
+  - rails
+domains: []
+reporters:
+  - rubocop
+  - require_not_found
+  - typecheck
+  - reek
+formatter:
+  rubocop:
+    cops: safe
+    except: []
+    only: []
+    extra_args: []
+require_paths:
+  - lib
+  - app
+  - config
+  - spec
+plugins:
+  - solargraph-rspec
+  - solargraph-rails
+max_files: 5000
+formatterOptions:
+  rubocop:
+    cops:
+      - all
+  reek:
+    config_file: ".reek.yml"

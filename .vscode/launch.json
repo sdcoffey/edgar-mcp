@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug RSpec - Current File",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "command": "/Users/steve/.local/share/mise/shims/bundle",
+      "args": ["exec", "rspec", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "BUNDLE_GEMFILE": "${workspaceFolder}/Gemfile"
+      }
+    },
+    {
+      "name": "Debug RSpec - Current Line",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "command": "/Users/steve/.local/share/mise/shims/bundle",
+      "args": ["exec", "rspec", "${file}:${lineNumber}"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "BUNDLE_GEMFILE": "${workspaceFolder}/Gemfile"
+      }
+    },
+    {
+      "name": "Debug RSpec - All",
+      "type": "ruby_lsp",
+      "request": "launch",
+      "command": "/Users/steve/.local/share/mise/shims/bundle",
+      "args": ["exec", "rspec"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "BUNDLE_GEMFILE": "${workspaceFolder}/Gemfile"
+      }
+    }
+  ]
+}

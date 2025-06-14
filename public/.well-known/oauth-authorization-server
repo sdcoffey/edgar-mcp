@@ -1,0 +1,6 @@
+{
+  "authorization_endpoint": null,
+  "token_endpoint": null,
+  "scopes_supported": [],
+  "grant_types_supported": ["api_key"]
+}
