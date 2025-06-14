@@ -89,7 +89,7 @@ gem 'flipper-ui', '~> 1.3.4'
 gem 'http', '~> 5.2'
 gem 'mini_racer', '~> 0.18'
 gem 'request_store', '~> 1.7'
-gem 'view_component', '~> 3.22'
+gem 'view_component', '~> 3.23'
 
 gem 'tailwindcss-ruby', '~> 4.1'
 
