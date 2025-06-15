@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 class McpController < ApplicationController
+  include ApiAuthenticatable
+
   skip_before_action :verify_authenticity_token
 
   before_action :validate_content_type
+  before_action :authenticate_api_key!
 
   def create
     responses = process_requests
@@ -100,6 +103,12 @@ class McpController < ApplicationController
         serverInfo: {
           name: 'Edgar MCP Server',
           version: '1.0.0'
+        },
+        # Include authenticated user context
+        authentication: {
+          user: current_user.name,
+          organization: current_organization.name,
+          api_key: current_api_key.name
         }
       }
     )

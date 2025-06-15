@@ -11,6 +11,8 @@ RSpec.describe 'MCP', type: :request do
     let(:params) { {} }
     let(:headers) { {} }
     let(:error_message) { nil }
+    let(:api_key) { create(:api_key) }
+    let(:token) { api_key.plain_token }
 
     shared_examples 'returns content-type json' do
       it 'has content-type json' do
@@ -43,8 +45,71 @@ RSpec.describe 'MCP', type: :request do
       end
     end
 
+    shared_examples 'authentication error' do
+      it 'returns authentication error' do
+        make_request
+
+        expect(response).to have_http_status(:unauthorized)
+        expect(response.parsed_body.deep_symbolize_keys)
+          .to match(
+            jsonrpc: '2.0',
+            id: nil,
+            error: {
+              code: -32001,
+              message: 'Authentication Required',
+              data: error_message
+            }
+          )
+      end
+    end
+
+    describe 'authentication' do
+      context 'when no API key is provided' do
+        let(:headers) { { 'content-type': 'application/json' } }
+        let(:params) { { jsonrpc: '2.0', method: 'initialize', id: 1 } }
+        let(:error_message) { 'Missing API key' }
+
+        it_behaves_like 'returns content-type json'
+        it_behaves_like 'authentication error'
+      end
+
+      context 'when invalid API key is provided' do
+        let(:headers) { { 'content-type': 'application/json', Authorization: 'Bearer invalid-token' } }
+        let(:params) { { jsonrpc: '2.0', method: 'initialize', id: 1 } }
+        let(:error_message) { 'Invalid API key' }
+
+        it_behaves_like 'returns content-type json'
+        it_behaves_like 'authentication error'
+      end
+
+      context 'when expired API key is provided' do
+        let(:expired_api_key) { create(:api_key, :expired) }
+        let(:headers) do
+          { 'content-type': 'application/json', Authorization: "Bearer #{expired_api_key.plain_token}" }
+        end
+        let(:params) { { jsonrpc: '2.0', method: 'initialize', id: 1 } }
+        let(:error_message) { 'API key has expired' }
+
+        it_behaves_like 'returns content-type json'
+        it_behaves_like 'authentication error'
+      end
+
+      context 'with valid API key in Authorization header' do
+        let(:headers) { { 'content-type': 'application/json', Authorization: "Bearer #{token}" } }
+        let(:params) { { jsonrpc: '2.0', method: 'initialize', id: 1 } }
+
+        it 'allows access and updates last_used_at' do
+          expect { make_request }.to change { api_key.reload.last_used_at }.from(nil)
+          expect(response).to have_http_status(:ok)
+        end
+      end
+    end
+
     describe 'jsonrpc validations' do
+      let(:headers) { { 'content-type': 'application/json', Authorization: "Bearer #{token}" } }
+
       context 'when content-type headers not set' do
+        let(:headers) { { Authorization: "Bearer #{token}" } }
         let(:error_message) { "Request must have content type: 'application/json'" }
 
         it_behaves_like 'returns content-type json'
@@ -53,7 +118,6 @@ RSpec.describe 'MCP', type: :request do
       end
 
       context 'with incorrect version' do
-        let(:headers) { { 'content-type': 'application/json' } }
         let(:params) { { jsonrpc: '1.2' } }
         let(:error_message) { nil }
 
@@ -64,7 +128,7 @@ RSpec.describe 'MCP', type: :request do
     end
 
     describe 'MCP protocol methods' do
-      let(:headers) { { 'content-type': 'application/json' } }
+      let(:headers) { { 'content-type': 'application/json', Authorization: "Bearer #{token}" } }
 
       shared_examples 'successful response' do |expected_result|
         it 'returns successful response' do
@@ -124,6 +188,11 @@ RSpec.describe 'MCP', type: :request do
           serverInfo: {
             name: 'Edgar MCP Server',
             version: '1.0.0'
+          },
+          authentication: {
+            user: String,
+            organization: String,
+            api_key: String
           }
         }
       end
