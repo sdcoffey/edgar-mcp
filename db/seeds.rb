@@ -48,12 +48,10 @@ end
 # Create organizations
 organizations = [
   {
-    name: 'Acme Corp',
-    description: 'A technology company focused on innovative solutions.'
+    name: 'Acme Corp'
   },
   {
-    name: 'Widget Inc',
-    description: 'Manufacturing widgets since 1995.'
+    name: 'Widget Inc'
   }
 ]
 
