@@ -3,13 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe 'MCP', type: :request do
+  let(:api_key) { create(:api_key) }
+  let(:headers) { { 'content-type': 'application/json', Authorization: "Bearer #{api_key.token}" } }
+
   describe 'POST /mcp' do
     subject(:make_request) do
-      post '/mcp', params: params.to_json, headers:
+      post '/mcp', params: params.to_json, headers: headers
     end
 
     let(:params) { {} }
-    let(:headers) { {} }
     let(:error_message) { nil }
 
     shared_examples 'returns content-type json' do
@@ -26,14 +28,14 @@ RSpec.describe 'MCP', type: :request do
       end
     end
 
-    shared_examples 'invalid request error' do
+    shared_examples 'invalid request error' do |id = nil|
       it 'returns invalid request error' do
         make_request
 
         expect(response.parsed_body.deep_symbolize_keys)
           .to match(
             jsonrpc: '2.0',
-            id: nil,
+            id: id,
             error: {
               code: -32600,
               message: 'Invalid Request',
@@ -45,6 +47,7 @@ RSpec.describe 'MCP', type: :request do
 
     describe 'jsonrpc validations' do
       context 'when content-type headers not set' do
+        let(:headers) { {} }
         let(:error_message) { "Request must have content type: 'application/json'" }
 
         it_behaves_like 'returns content-type json'
@@ -63,9 +66,63 @@ RSpec.describe 'MCP', type: :request do
       end
     end
 
-    describe 'MCP protocol methods' do
-      let(:headers) { { 'content-type': 'application/json' } }
+    describe 'authentication' do
+      let(:params) do
+        {
+          jsonrpc: '2.0',
+          method: 'initialize',
+          id: 1
+        }
+      end
 
+      context 'without an Authorization header' do
+        let(:headers) { { 'content-type': 'application/json' } }
+
+        it 'returns an unauthorized status' do
+          make_request
+          expect(response).to have_http_status(:unauthorized)
+        end
+
+        it 'returns a meaningful error message' do
+          make_request
+          body = response.parsed_body
+          expect(body['error']['data']).to eq('Authorization header is missing')
+        end
+      end
+
+      context 'with an invalid API key' do
+        let(:headers) { { 'content-type': 'application/json', Authorization: 'Bearer invalid' } }
+
+        it 'returns an unauthorized status' do
+          make_request
+          expect(response).to have_http_status(:unauthorized)
+        end
+
+        it 'returns a meaningful error message' do
+          make_request
+          body = response.parsed_body
+          expect(body['error']['data']).to eq('Invalid API Key')
+        end
+      end
+
+      context 'with an expired API key' do
+        let(:api_key) { create(:api_key, expires_at: 1.day.ago) }
+        let(:headers) { { 'content-type': 'application/json', Authorization: "Bearer #{api_key.token}" } }
+
+        it 'returns an unauthorized status' do
+          make_request
+          expect(response).to have_http_status(:unauthorized)
+        end
+
+        it 'returns a meaningful error message' do
+          make_request
+          body = response.parsed_body
+          expect(body['error']['data']).to eq('Invalid API Key')
+        end
+      end
+    end
+
+    describe 'MCP protocol methods' do
       shared_examples 'successful response' do |expected_result|
         it 'returns successful response' do
           make_request
@@ -112,20 +169,37 @@ RSpec.describe 'MCP', type: :request do
           }
         end
 
+        it 'returns a successful response with user and org info' do
+          make_request
+          expected_result = {
+            protocolVersion: '2024-11-05',
+            capabilities: {
+              tools: {},
+              resources: {},
+              prompts: {}
+            },
+            serverInfo: {
+              name: 'Edgar MCP Server',
+              version: '1.0.0'
+            },
+            user: {
+              id: api_key.user.id,
+              email: api_key.user.email
+            },
+            organization: {
+              id: api_key.user.organization.id,
+              name: api_key.user.organization.name
+            }
+          }
+          expect(response.parsed_body.deep_symbolize_keys).to match(
+            jsonrpc: '2.0',
+            id: 1,
+            result: expected_result
+          )
+        end
+
         it_behaves_like 'returns content-type json'
         it_behaves_like 'returns http 200'
-        it_behaves_like 'successful response', {
-          protocolVersion: '2024-11-05',
-          capabilities: {
-            tools: {},
-            resources: {},
-            prompts: {}
-          },
-          serverInfo: {
-            name: 'Edgar MCP Server',
-            version: '1.0.0'
-          }
-        }
       end
 
       describe 'tools/list' do

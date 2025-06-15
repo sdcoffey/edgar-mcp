@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 class McpController < ApplicationController
+  class AuthenticationError < StandardError; end
   skip_before_action :verify_authenticity_token
 
   before_action :validate_content_type
 
+  rescue_from 'McpController::AuthenticationError' do |e|
+    render json: e.message.to_h, status: :unauthorized
+  end
+
   def create
+    authenticate
     responses = process_requests
     responses = responses.first unless batch_request?
     render pretty_json: responses
@@ -40,6 +46,10 @@ class McpController < ApplicationController
 
   def handle_params_request
     params['_json'] || [params['mcp']]
+  end
+
+  def current_user
+    @current_user ||= @current_api_key&.user
   end
 
   def process_requests # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
@@ -85,6 +95,21 @@ class McpController < ApplicationController
     render pretty_json: JsonRpc::Error.invalid_request(data: "Request must have content type: 'application/json'")
   end
 
+  def authenticate
+    authorization_header = request.headers['Authorization']
+    unless authorization_header
+      raise AuthenticationError,
+            JsonRpc::Error.invalid_request(data: 'Authorization header is missing')
+    end
+
+    token = authorization_header.split.last
+    @current_api_key = ApiKey.active.find_by(token: token)
+
+    raise AuthenticationError, JsonRpc::Error.invalid_request(data: 'Invalid API Key') unless @current_api_key
+
+    @current_api_key.touch_last_used
+  end
+
   # MCP Protocol Handlers
 
   def handle_initialize(rpc_request)
@@ -100,6 +125,14 @@ class McpController < ApplicationController
         serverInfo: {
           name: 'Edgar MCP Server',
           version: '1.0.0'
+        },
+        user: {
+          id: current_user.id,
+          email: current_user.email
+        },
+        organization: {
+          id: current_user.organization.id,
+          name: current_user.organization.name
         }
       }
     )
