@@ -116,7 +116,7 @@ module JsonRpc
       Error.new(
         id:,
         error_code: -32_001,
-        message: data,
+        message: 'Unauthorized',
         data:
       )
     end
