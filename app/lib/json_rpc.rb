@@ -108,5 +108,17 @@ module JsonRpc
         data:
       )
     end
+
+    # Custom error for authorization failures
+    # JSON-RPC reserved code range for server errors is −32000 to −32099
+    # We pick −32001 to denote Unauthorized.
+    def self.unauthorized(id: nil, data: nil)
+      Error.new(
+        id:,
+        error_code: -32_001,
+        message: data,
+        data:
+      )
+    end
   end
 end

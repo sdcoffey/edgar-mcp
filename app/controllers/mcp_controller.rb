@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class McpController < ApplicationController
+  include ApiKeyAuthenticatable
+
   skip_before_action :verify_authenticity_token
 
   before_action :validate_content_type
