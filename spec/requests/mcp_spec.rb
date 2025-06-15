@@ -5,11 +5,12 @@ require 'rails_helper'
 RSpec.describe 'MCP', type: :request do
   describe 'POST /mcp' do
     subject(:make_request) do
-      post '/mcp', params: params.to_json, headers:
+      post '/mcp', params: params.to_json, headers: headers
     end
 
     let(:params) { {} }
-    let(:headers) { {} }
+    let(:api_key) { create(:api_key) }
+    let(:headers) { { 'Authorization' => "Bearer #{api_key.token}" } }
     let(:error_message) { nil }
 
     shared_examples 'returns content-type json' do
@@ -53,7 +54,7 @@ RSpec.describe 'MCP', type: :request do
       end
 
       context 'with incorrect version' do
-        let(:headers) { { 'content-type': 'application/json' } }
+        let(:headers) { { 'content-type': 'application/json', 'Authorization' => "Bearer #{api_key.token}" } }
         let(:params) { { jsonrpc: '1.2' } }
         let(:error_message) { nil }
 
@@ -64,7 +65,7 @@ RSpec.describe 'MCP', type: :request do
     end
 
     describe 'MCP protocol methods' do
-      let(:headers) { { 'content-type': 'application/json' } }
+      let(:headers) { { 'content-type': 'application/json', 'Authorization' => "Bearer #{api_key.token}" } }
 
       shared_examples 'successful response' do |expected_result|
         it 'returns successful response' do

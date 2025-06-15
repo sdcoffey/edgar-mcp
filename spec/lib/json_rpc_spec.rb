@@ -291,5 +291,39 @@ RSpec.describe JsonRpc do
         expect(error.data).to eq('Missing required field')
       end
     end
+
+    describe '.unauthorized' do
+      context 'without data' do
+        let(:error) { described_class.unauthorized }
+
+        it 'sets id to nil' do
+          expect(error.id).to be_nil
+        end
+
+        it 'sets error code to -32001' do
+          expect(error.error_code).to eq(-32_001)
+        end
+
+        it 'sets message to Unauthorized' do
+          expect(error.message).to eq('Unauthorized')
+        end
+
+        it 'sets data to nil' do
+          expect(error.data).to be_nil
+        end
+      end
+
+      context 'with data' do
+        let(:error) { described_class.unauthorized(data: 'Token invalid') }
+
+        it 'sets error code correctly' do
+          expect(error.error_code).to eq(-32_001)
+        end
+
+        it 'sets data correctly' do
+          expect(error.data).to eq('Token invalid')
+        end
+      end
+    end
   end
 end

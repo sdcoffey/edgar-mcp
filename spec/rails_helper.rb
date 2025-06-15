@@ -13,6 +13,7 @@ require 'support/ahoy'
 require 'support/factory_bot'
 require 'support/instance_mock'
 require 'support/json_fixture'
+require 'support/shoulda_matchers'
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
