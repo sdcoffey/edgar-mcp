@@ -60,6 +60,9 @@ RSpec/NestedGroups:
 Style/Documentation:
   Enabled: false
 
+RSpec/MultipleExpectations:
+  Enabled: false
+
 Style/FormatStringToken:
   Exclude:
     - "config/routes.rb"
