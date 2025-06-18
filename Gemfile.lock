@@ -137,7 +137,7 @@ GEM
     crass (1.0.6)
     csv (3.3.4)
     date (3.4.1)
-    debug (1.9.2)
+    debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
     derived_images (0.4.1)
@@ -339,7 +339,7 @@ GEM
       ffi (~> 1.0)
     rbs (3.9.4)
       logger
-    rdoc (6.14.0)
+    rdoc (6.14.1)
       erb
       psych (>= 4.0.0)
     redis (5.4.0)
@@ -505,7 +505,7 @@ DEPENDENCIES
   blazer (~> 3.3)
   bootsnap
   capybara
-  debug (~> 1.9.1)
+  debug (~> 1.11.0)
   derived_images (~> 0.4.1)
   dotenv-rails (~> 3)
   erb_lint (~> 0.9)
